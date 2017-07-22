@@ -1,0 +1,53 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Giphy Viewer</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- 	<link rel="stylesheet" href="assets/css/reset.css"> -->
+	<link rel="stylesheet" href="assets/css/style.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- Animation javascript file -->
+	<script src="assets/anime.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+</head>
+<body>
+<header class="container-fluid">
+	<div class="row">
+		<div class="col-md-7">
+		<img class="img img-responsive center-block" src="https://media.giphy.com/media/tm521PleKwiR2/giphy.gif" style="margin-left:auto;margin-right:auto;height:250px">
+		</div>
+		<div class="col-md-5" style="padding-top:80px">
+			<div class="form-group" id="gif-form">
+	      		<input type="text" id="search-input">
+	      		<label for="search-input" id="add-gif"><i class="fa fa-search fa-3x" aria-hidden="true" style="color:white"></i></label>      			
+    		</div>	
+		</div>
+	</div>
+</header>
+<div class="container" id="main">
+	<div class="row">
+		<div class="container" id="button-container"></div>		
+	</div>
+	<div class="row">
+		<div class="col-s-6 col-s-push-6 col-md-3 col-md-push-9">
+			<div class="row">
+				<h4>Saved Images</h4>
+			</div>
+			<div class="row" id="saved">				
+			</div>
+		</div>
+		<div class="col-s-6 col-s-pull-6 col-md-9 col-md-pull-3" id="giphy-info">
+		</div>
+	</div>
+</div>
+
+<script src="assets/app.js"></script>
+
+</body>
+</html>
