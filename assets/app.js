@@ -19,7 +19,7 @@ var giphySearch = {
 				$("#giphy-info").empty();
 				var results = response.data;
 				results.forEach(function(picture){
-					var container = $("<div class='col-sm-4 animated zoomIn' style='margin-bottom:5px'>");
+					var container = $("<div class='col-sm-4 animated zoomIn btn' style='margin-bottom:5px'>");
 					var gifDiv = $("<div class='gif-container container'>");
 					var rating = $("<span style='margin-right:5px'>").text("Rating: " + picture.rating.toUpperCase());
 					gifDiv.attr("data-state","still")
