@@ -16,7 +16,6 @@ var giphySearch = {
 			queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm +"&api_key=8925750c46774225a89d94feafb4b3b6&limit=25"
 			var xhr = $.get(queryURL);
 			xhr.done(function(response) { 
-				GiphySearch.displayResults(response);
 				$("#giphy-info").empty();
 				var results = response.data;
 				results.forEach(function(picture){
@@ -31,7 +30,7 @@ var giphySearch = {
 					bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i></i><span> Bookmark</span>');
 					bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
 					bookmarkButton.attr("data-url",picture.images.fixed_height.url);
-					container.append(gifDiv).append(rating).append(bookmarkButton).
+					container.append(gifDiv).append(rating).append(bookmarkButton);
 					$("#giphy-info").append(container);
 				});
 			});
