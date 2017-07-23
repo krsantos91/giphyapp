@@ -1,6 +1,8 @@
 var giphySearch = {
 	index:[],
 
+	temp: "",
+
 	newSearch: function(event){
 		event.preventDefault();
 		$("#search-input").empty()
@@ -14,17 +16,22 @@ var giphySearch = {
 			queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm +"&api_key=8925750c46774225a89d94feafb4b3b6&limit=25"
 			var xhr = $.get(queryURL);
 			xhr.done(function(response) { 
+				GiphySearch.displayResults(response);
 				$("#giphy-info").empty();
 				var results = response.data;
 				results.forEach(function(picture){
 					var container = $("<div class='col-sm-4 animated zoomIn' style='margin-bottom:5px'>");
-					var gifDiv = $("<div class='gif container'>");
-					var rating = $("<span style='margin-right:5px'>").text("Rating: " + picture.rating);
+					var gifDiv = $("<div class='gif-container container'>");
+					var rating = $("<span style='margin-right:5px'>").text("Rating: " + picture.rating.toUpperCase());
+					gifDiv.attr("data-state","still")
+					gifDiv.attr("data-still-url",picture.images.fixed_height_still.url);
+					gifDiv.attr("data-animate-url",picture.images.fixed_height.url);
 					gifDiv.css("background-image", "url('" + picture.images.fixed_height_still.url + "')")
-					var saveButton = $("<span class='btn btn-success savebutton'>");
-					saveButton.html('<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>');
-					saveButton.attr("data-url",picture.images.downsized.url);
-					container.append(gifDiv).append(rating).append(saveButton)
+					var bookmarkButton = $("<span class='btn btn-success bookmark'>");
+					bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i></i><span> Bookmark</span>');
+					bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
+					bookmarkButton.attr("data-url",picture.images.fixed_height.url);
+					container.append(gifDiv).append(rating).append(bookmarkButton).
 					$("#giphy-info").append(container);
 				});
 			});
@@ -50,14 +57,20 @@ var giphySearch = {
 		var xhr = $.get(queryURL);
 		xhr.done(function(response) { 
 			var results = response.data;
+			var counter = 1;
 			results.forEach(function(picture){
-				var container = $("<div class='col-sm-4 animated zoomIn' style='margin-bottom:5px'>");				var gifDiv = $("<div class='gif container'>");
+				var container = $("<div class='col-sm-4 animated zoomIn' style='margin-bottom:5px'>");
+				var gifDiv = $("<div class='gif-container container'>");
 				var rating = $("<span style='margin-right:5px'>").text("Rating: " + picture.rating);
-				gifDiv.css("background-image", "url('" + picture.images.fixed_height_still.url + "')")
-				var saveButton = $("<div class='btn btn-success savebutton'>");
-				saveButton.html('<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>');
-				saveButton.attr("data-url",picture.images.downsized.url);
-				container.append(gifDiv).append(rating).append(saveButton)
+				gifDiv.attr("data-state","still")
+				gifDiv.attr("data-still-url",picture.images.fixed_height_still.url);
+				gifDiv.attr("data-animate-url",picture.images.fixed_height.url);
+				gifDiv.css("background-image", "url('" + gifDiv.attr("data-still-url") + "')");
+				var bookmarkButton = $("<div class='btn btn-success bookmark'>");
+				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
+				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
+				bookmarkButton.attr("data-url",picture.images.fixed_height.url);
+				container.append(gifDiv).append(rating).append(bookmarkButton)
 				$("#giphy-info").append(container);
 
 			});
@@ -65,14 +78,59 @@ var giphySearch = {
 	},
 
 	saveImage: function(event){
-		var imageURL = $(event.currentTarget).attr("data-url");
-		var container = $("<div class='col-xs-4 col-sm-2 col-md-6 animated fadeInRight'>")		
+		$(event.currentTarget).addClass("animated fadeOutDown")
+		var imageURL = $(event.currentTarget).attr("data-bookmark-url");
+		var container = $("<div class='col-xs-4 col-sm-2 col-md-6 animated fadeInUp'>")	;
+		var link = $("<a>");	
+		link.attr("href", $(event.currentTarget).attr("data-url"));
+		link.attr("target","blank");
 		var imageDiv = $("<div class='container'>");
 		imageDiv.addClass("savedImages");
 		imageDiv.css('background-image', 'url("'+ imageURL + '")');
-		container.append(imageDiv)
+		link.append(imageDiv)
+		container.append(link)
 		$("#saved").append(container);
-	}
+	},
+
+	animate: function(event){	
+		var state = $(event.currentTarget).attr("data-state");
+		var animate = $(event.currentTarget).attr("data-animate-url");
+		var stop = $(event.currentTarget).attr("data-still-url");
+
+		if (giphySearch.temp != "" && giphySearch.temp != stop ){
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("background-image", "url('" + giphySearch.temp + "')");
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").parent().removeClass("col-sm-8").addClass("col-sm-4");
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").attr("data-state","still");
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").animate({
+				height: '200px',
+				width: '100%'
+			});	
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("max-width","250px")					
+		};
+
+		if (state === "still"){		
+			giphySearch.temp = stop;
+			$(event.currentTarget).parent().removeClass("col-sm-4").addClass("col-sm-8");
+			$(event.currentTarget).css("max-width","500px")
+			$(event.currentTarget).css("background-image", "url('" + animate + "')");
+			$(event.currentTarget).attr("data-state","animated" );
+			$(event.currentTarget).animate({
+				height: '400px',
+				width: '400px'
+			});
+
+		}
+		else{		
+			$(event.currentTarget).parent().removeClass("col-sm-8").addClass("col-sm-4");
+			$(event.currentTarget).css("max-width","250px")			
+			$(event.currentTarget).css("background-image", "url('" + stop + "')");
+			$(event.currentTarget).attr("data-state","still" );
+			$(event.currentTarget).animate({
+				height: '200px',
+				width: '100%'
+			});			
+		}
+	},
 };
 
 
@@ -84,6 +142,10 @@ $(document).on("click","[data-name]", function(e){
 	giphySearch.api(e);
 });
 
-$(document).on("click",".savebutton",function(e){
+$(document).on("click",".bookmark",function(e){
 	giphySearch.saveImage(e);
 });
+
+$(document).on("click",".gif-container",function(e){
+	giphySearch.animate(e);
+})

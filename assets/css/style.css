@@ -37,7 +37,7 @@ body{
     margin:4px;
 }
 
-.gif{
+.gif-container{
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -46,6 +46,8 @@ body{
     max-width:250px;
  	border: 2px solid black;
  	text-align: center;
+ 	margin-right:auto;
+ 	margin-left:auto;
 
 }
 
