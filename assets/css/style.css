@@ -63,3 +63,9 @@ body{
 input{
 	outline:none;
 }
+
+#bookmark-container{
+	border-radius:5px;
+	color:#000000;
+	border:1px solid black;
+}

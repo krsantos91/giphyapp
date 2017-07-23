@@ -133,8 +133,8 @@ var giphySearch = {
 			$(event.currentTarget).css("background-image", "url('" + animate + "')");
 			$(event.currentTarget).attr("data-state","animated" );
 			$(event.currentTarget).animate({
-				height: '350px',
-				width: '400px'
+				height: '390px',
+				width: '430px'
 			});
 
 		}
@@ -202,4 +202,7 @@ $(document).on("click","#nextbutton",function(e){
 	giphySearch.addContent($(this).attr("data-info"));
 })
 
+$(document).on("click","#bookmarktrash",function(){
+	$("#saved").empty();
+})
 
