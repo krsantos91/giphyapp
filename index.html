@@ -26,7 +26,7 @@
 		</div>
 		<div class="col-md-5" id="search">
 			<div class="form-group" id="gif-form">
-	      		<input type="text" id="search-input" placeholder="search">
+	      		<input type="text" id="search-input" placeholder="Search">
 	      		<label for="search-input" id="add-gif"><i class="fa fa-search fa-3x" aria-hidden="true" style="color:white"></i></label>      			
     		</div>	
 		</div>
@@ -39,9 +39,10 @@
 	<div class="row">
 		<div class="col-s-6 col-s-push-6 col-md-3 col-md-push-9" id="bookmark-container" style="border:1px solid grey;margin-bottom:10px">
 			<div class="row bg-success">
-				<h3>Bookmarked Gifs</h3><i class="fa fa-trash-o btn" aria-hidden="true" id="bookmarktrash" style="float:right"></i>
+				<h2>Bookmarked Gifs</h2><i class="fa fa-trash-o fa-2x btn" aria-hidden="true" id="bookmarktrash" style="float:right"></i>
 			</div>
-			<div class="row" id="saved">				
+			<div class="row" id="saved">
+				<span style='color:white'>Bookmark Gif's to store them here and view later.</span>		
 			</div>
 		</div>
 		<div class="col-s-6 col-s-pull-6 col-md-9 col-md-pull-3">
@@ -49,6 +50,7 @@
 			<div class="row" id="loadmore" style="margin-bottom:10px"></div>
 		</div>
 	</div>
+	<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-arrow-circle-o-up fa-3x animated infinite pulse" aria-hidden="true"></i></button>
 </div>
 
 <script src="assets/app.js"></script>

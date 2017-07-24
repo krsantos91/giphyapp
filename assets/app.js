@@ -5,7 +5,7 @@ var giphySearch = {
 
 	contentIndex: 1,
 
-	newSearch: function(event){
+	newSearch: function(){
 		$("#loadmore").empty();
 		giphySearch.contentIndex = 1;
     	var newGif = $("#search-input").val().trim();
@@ -36,11 +36,16 @@ var giphySearch = {
 						gifDiv.attr("data-animate-url",picture.images.fixed_height.url);
 						gifDiv.css("background-image", "url('" + picture.images.fixed_height_still.url + "')")
 						var bookmarkButton = $("<span class='btn btn-success bookmark'>");
-						bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i></i><span> Bookmark</span>');
+						bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 						bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
-						bookmarkButton.attr("data-url",picture.images.fixed_height.url);
-						container.append(gifDiv).append(rating).append(bookmarkButton);
+						bookmarkButton.attr("data-url",picture.url);
+						var shareButton = $("<span class='btn btn-primary share'>")
+						shareButton.attr("data-url",picture.url);
+						shareButton.html("<i class='fa fa-share-alt' aria-hidden='true'></i><span> Share</span>");
+						shareButton.attr("style","margin-left:5px")
+						container.append(gifDiv).append(rating).append(bookmarkButton).append(shareButton);
 						$("#giphy-info").append(container);
+
 					});
 					var nextButton = $("<div class='btn btn-warning' id='nextbutton'>");
 					nextButton.attr("data-info",newGif);
@@ -84,7 +89,11 @@ var giphySearch = {
 				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
 				bookmarkButton.attr("data-url",picture.images.fixed_height.url);
-				container.append(gifDiv).append(rating).append(bookmarkButton)
+				var shareButton = $("<span class='btn btn-primary share'>");
+				shareButton.attr("data-url",picture.url);
+				shareButton.html("<i class='fa fa-share-alt' aria-hidden='true'></i><span> Share</span>");
+				shareButton.attr("style","margin-left:5px")
+				container.append(gifDiv).append(rating).append(bookmarkButton).append(shareButton);
 				$("#giphy-info").append(container);
 			});
 			var nextButton = $("<div class='btn btn-warning' id='nextbutton'>");
@@ -95,10 +104,16 @@ var giphySearch = {
         });
 	},
 
+	ignore: false,
+
 	saveImage: function(event){
+		if (giphySearch.ignore === false){
+			$("#saved").empty();
+			giphySearch.ignore =  true;
+		}
 		$(event.currentTarget).addClass("animated fadeOutDown")
 		var imageURL = $(event.currentTarget).attr("data-bookmark-url");
-		var container = $("<div class='col-xs-4 col-sm-2 col-md-6 animated fadeInUp'>")	;
+		var container = $("<div class='col-xs-4 col-sm-2 col-md-6 animated fadeInLeft'>")	;
 		var link = $("<a>");	
 		link.attr("href", $(event.currentTarget).attr("data-url"));
 		link.attr("target","_blank");
@@ -169,7 +184,11 @@ var giphySearch = {
 				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
 				bookmarkButton.attr("data-url",picture.images.fixed_height.url);
-				container.append(gifDiv).append(rating).append(bookmarkButton)
+				var shareButton = $("<span class='btn btn-primary share'>");
+				shareButton.attr("data-url",picture.url);
+				shareButton.html("<i class='fa fa-share-alt' aria-hidden='true'></i><span> Share</span>");
+				shareButton.attr("style","margin-left:5px")
+				container.append(gifDiv).append(rating).append(bookmarkButton).append(shareButton);
 				$("#giphy-info").append(container);
 			});
 			var nextButton = $("<div class='btn btn-warning' id='nextbutton'>");
@@ -177,14 +196,28 @@ var giphySearch = {
 			nextButton.text("Load more");
 			$("#loadmore").append(nextButton);		
 		});
+	},
+
+	share: function(event){
+		var url = $(event.currentTarget).attr("data-url");
+		$(".shareDiv").remove();
+		var shareDiv = $("<div class='shareDiv container-fluid animated fadeInDown' style='border-radius:5px;margin-top:2px'>");
+		shareDiv.html("<i class='fa fa-share' aria-hidden='true'></i> <label for='#share-input'>  URL </label> <input type='text' id='share-input' value=' "+ url +" ' style='background:#000000'>");
+		$(event.currentTarget).parent().append(shareDiv);
 	}
 
 };
 
 
-$("#add-gif").on("click", function(e){
-	giphySearch.newSearch(e);
+$("#add-gif").on("click", function(){
+	giphySearch.newSearch();
 });
+
+$("#search-input").on("keypress",function(e){
+	if(e.which == 13 && giphySearch.index.indexOf($("#search-input").val().trim()) == -1){
+		giphySearch.newSearch();
+	}
+})
 
 $(document).on("click","[data-name]", function(e){
 	giphySearch.api(e);
@@ -204,5 +237,28 @@ $(document).on("click","#nextbutton",function(e){
 
 $(document).on("click","#bookmarktrash",function(){
 	$("#saved").empty();
+	giphySearch.ignore = false;
+	$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>")
 })
 
+$(document).on("click", ".share",function(e){
+	giphySearch.share(e.c)
+})
+
+
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+    document.documentElement.scrollTop = 0; // For IE and Firefox
+}
