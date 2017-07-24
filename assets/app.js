@@ -242,7 +242,7 @@ $(document).on("click","#bookmarktrash",function(){
 })
 
 $(document).on("click", ".share",function(e){
-	giphySearch.share(e.c)
+	giphySearch.share(e)
 })
 
 
