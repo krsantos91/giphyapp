@@ -75,6 +75,10 @@ input{
 	width:100%;
 }
 
+#ratings-filter{
+	visibility:none;
+}
+
 #header{
 	margin-left:auto;margin-right:auto;height:150px;width:400px
 }
@@ -82,6 +86,7 @@ input{
 #search{
 	padding-top:80px
 }
+
 
 @media only screen and (max-width: 750px) {
     #header {
