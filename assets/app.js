@@ -88,7 +88,7 @@ var giphySearch = {
 				var bookmarkButton = $("<div class='btn btn-success bookmark'>");
 				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
-				bookmarkButton.attr("data-url",picture.images.fixed_height.url);
+				bookmarkButton.attr("data-url",picture.url);
 				var shareButton = $("<span class='btn btn-primary share'>");
 				shareButton.attr("data-url",picture.url);
 				shareButton.html("<i class='fa fa-share-alt' aria-hidden='true'></i><span> Share</span>");
@@ -183,8 +183,8 @@ var giphySearch = {
 				var bookmarkButton = $("<div class='btn btn-success bookmark'>");
 				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
-				bookmarkButton.attr("data-url",picture.images.fixed_height.url);
-				var shareButton = $("<span class='btn btn-primary share'>");
+				bookmarkButton.attr("data-url",picture.url);
+				var shareButton = $("<div class='btn btn-primary share'>");
 				shareButton.attr("data-url",picture.url);
 				shareButton.html("<i class='fa fa-share-alt' aria-hidden='true'></i><span> Share</span>");
 				shareButton.attr("style","margin-left:5px")
@@ -242,7 +242,7 @@ $(document).on("click","#bookmarktrash",function(){
 })
 
 $(document).on("click", ".share",function(e){
-	giphySearch.share(e)
+	giphySearch.share(e);
 })
 
 
