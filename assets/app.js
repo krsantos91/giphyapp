@@ -109,12 +109,12 @@ var giphySearch = {
 		if (state === "still"){		
 			giphySearch.temp = stop;
 			$(event.currentTarget).parent().removeClass("col-sm-4").addClass("col-sm-8");
-			$(event.currentTarget).css("max-width","480px")
+			$(event.currentTarget).css("max-width","350px")
 			$(event.currentTarget).css("background-image", "url('" + animate + "')");
 			$(event.currentTarget).attr("data-state","animated" );
 			$(event.currentTarget).animate({
-				height: '320px',
-				width: '480px'
+				height: '250px',
+				width: '350px'
 			});
 		}
 		else{		
