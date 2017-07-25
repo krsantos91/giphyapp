@@ -152,7 +152,7 @@ var giphySearch = {
 		var url = $(event.currentTarget).attr("data-url");
 		$(".shareDiv").remove();
 		var shareDiv = $("<div class='shareDiv container-fluid animated fadeInDown' style='border-radius:5px;margin-top:2px'>");
-		shareDiv.html("<i class='fa fa-share' aria-hidden='true'></i> <label for='#share-input'></label> <input type='text' id='share-input' value=' "+ url +" ' style='background:#000000'>");
+		shareDiv.html("<i class='fa fa-link' aria-hidden='true'></i> <label for='#share-input'></label> <input type='text' id='share-input' value=' "+ url +" ' style='background:#000000'>");
 		$(event.currentTarget).parent().append(shareDiv);
 	}
 };
