@@ -191,12 +191,9 @@ $(document).on("click","#bookmarktrash",function(){
 	$("#bookmarktrash").addClass("animated bounce").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
 		$("#bookmarktrash").removeClass("animated bounce");
 	});
-	$("#saved").addClass("animated fadeOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
-		$("#saved").removeClass("animated fadeOut");
-		$("#saved").empty();
-		giphySearch.ignore = false;
-		$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>")
-	});	
+	$("#saved").empty();
+	giphySearch.ignore = false;
+	$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>");
 });
 
 
