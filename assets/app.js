@@ -1,6 +1,5 @@
 var giphySearch = {
 	index:[],
-	temp: "",
 	contentIndex: 1,
 	renderButtons: function(){
 		$("#button-container").empty();
@@ -18,21 +17,20 @@ var giphySearch = {
 		$("#ratings-filter").css("visibility","visible");		
 		$("#loadmore").empty();
 		giphySearch.contentIndex = 1;
-    	var newGif = $("#search-input").val().trim();
+    	var searchTerm = $("#search-input").val().trim();
     	$("#search-input").val("")
-    	if (giphySearch.index.indexOf(newGif) == -1){
-       	 	giphySearch.index.push(newGif);
+    	if (giphySearch.index.indexOf(searchTerm) == -1){
+       	 	giphySearch.index.push(searchTerm);
        	 	giphySearch.renderButtons();
- 			var searchTerm = newGif;
 			queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm +"&api_key=8925750c46774225a89d94feafb4b3b6&limit=25"
 			var xhr = $.get(queryURL);
 			xhr.done(function(response) { 
 				$("#giphy-info").empty();
-				giphySearch.displayResults(response,newGif);	
+				giphySearch.displayResults(response,searchTerm);	
 			});
 		};
 	},
-	api: function(event){
+	pastSearch: function(event){
 		$("#loadmore").empty();
 		$("#giphy-info").empty();
 		giphySearch.contentIndex = 1;
@@ -90,6 +88,7 @@ var giphySearch = {
 			$("#loadmore").append(nextButton);	
 		}		
 	},
+	temp: "",	
 	animate: function(event){	
 		var state = $(event.currentTarget).attr("data-state");
 		var animate = $(event.currentTarget).attr("data-animate-url");
@@ -98,13 +97,13 @@ var giphySearch = {
 		// this resets the previously active element back to a still image and catches error if there was no previous image
 		if (giphySearch.temp != "" && giphySearch.temp != stop ){
 			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("background-image", "url('" + giphySearch.temp + "')");
-			$(".gif-container[data-still-url='" + giphySearch.temp + "']").parent().removeClass("col-sm-8").addClass("col-sm-4")
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").parent().removeClass("col-sm-8").addClass("col-sm-4");
 			$(".gif-container[data-still-url='" + giphySearch.temp + "']").attr("data-state","still");
 			$(".gif-container[data-still-url='" + giphySearch.temp + "']").animate({
 				height: '200px',
 				width: '100%'
 			});	
-			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("max-width","250px")					
+			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("max-width","250px");					
 		};
 		if (state === "still"){		
 			giphySearch.temp = stop;
@@ -154,48 +153,43 @@ var giphySearch = {
 		var shareDiv = $("<div class='shareDiv container-fluid animated fadeInDown' style='border-radius:5px;margin-top:2px'>");
 		shareDiv.html("<i class='fa fa-link' aria-hidden='true'></i> <label for='#share-input'></label> <input type='text' id='share-input' value=' "+ url +" ' style='background:#000000'>");
 		$(event.currentTarget).parent().append(shareDiv);
+	},
+	clearBookmark: function(){
+		$("#bookmarktrash").addClass("animated bounce").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+			$("#bookmarktrash").removeClass("animated bounce");
+		});
+		$("#saved").empty();
+		giphySearch.ignore = false;
+		$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>");		
 	}
 };
 
-$("#add-gif").on("click", function(){
-	giphySearch.newSearch();
-});
-
-$("#search-input").on("keypress",function(e){
-	if(e.which == 13 && giphySearch.index.indexOf($("#search-input").val().trim()) == -1){
+$(document).ready(function(){
+	$("#add-gif").on("click", function(){
 		giphySearch.newSearch();
-	}
-});
-
-$(document).on("click","[data-name]", function(e){
-	giphySearch.api(e);
-});
-
-$(document).on("click",".gif-container",function(e){
-	giphySearch.animate(e);
-});
-
-$(document).on("click",".bookmark",function(e){
-	giphySearch.saveImage(e);
-});
-
-$(document).on("click", ".share",function(e){
-	giphySearch.share(e);
-});
-
-$(document).on("click","#nextbutton",function(e){
-	giphySearch.addContent($(this).attr("data-info"));
-});
-
-$(document).on("click","#bookmarktrash",function(){
-	$("#bookmarktrash").addClass("animated bounce").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
-		$("#bookmarktrash").removeClass("animated bounce");
 	});
-	$("#saved").empty();
-	giphySearch.ignore = false;
-	$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>");
-});
-
+	$("#search-input").on("keypress",function(e){
+		if(e.which == 13 && giphySearch.index.indexOf($("#search-input").val().trim()) == -1)giphySearch.newSearch();
+	});
+	$(document).on("click","[data-name]", function(e){
+		giphySearch.pastSearch(e);
+	});
+	$(document).on("click",".gif-container",function(e){
+		giphySearch.animate(e);
+	});
+	$(document).on("click","#nextbutton",function(e){
+		giphySearch.addContent($(this).attr("data-info"));
+	});	
+	$(document).on("click",".bookmark",function(e){
+		giphySearch.saveImage(e);
+	});
+	$(document).on("click","#bookmarktrash",function(){
+		giphySearch.clearBookmark();
+	});	
+	$(document).on("click", ".share",function(e){
+		giphySearch.share(e);
+	});
+})
 
 // scroll to top functionality
 window.onscroll = function() {scrollFunction()};
@@ -209,4 +203,5 @@ function scrollFunction() {
 function topFunction() {
     document.body.scrollTop = 0; // For Chrome, Safari and Opera 
     document.documentElement.scrollTop = 0; // For IE and Firefox
-}
+}	
+
