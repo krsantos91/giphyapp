@@ -4,12 +4,13 @@ var giphySearch = {
 	contentIndex: 1,
 	renderButtons: function(){
 		$("#button-container").empty();
+		$("#button-container").text("Previous Searches: ");
 		giphySearch.index.forEach(function(index){
 			var button = $("<div>");
-			button.addClass("btn btn-primary");
+			button.addClass("btn btn-info");
 			button.attr("data-name",index);
-			button.attr("style", "margin: 0 2px")
-			button.text(index)
+			button.attr("style", "margin: 2px 2px")
+			button.text("#" + index.toUpperCase())
 			$("#button-container").append(button);
 		});
 	},	
@@ -68,9 +69,9 @@ var giphySearch = {
 				var rating = $("<div class='rating'>").text("Rating: " + picture.rating.toUpperCase());
 				rating.attr("data-rating",picture.rating)						
 				gifDiv.attr("data-state","still")
-				gifDiv.attr("data-still-url",picture.images.fixed_height_still.url);
-				gifDiv.attr("data-animate-url",picture.images.fixed_height.url);
-				gifDiv.css("background-image", "url('" + picture.images.fixed_height_still.url + "')")
+				gifDiv.attr("data-still-url",picture.images.original_still.url);
+				gifDiv.attr("data-animate-url",picture.images.original.url);
+				gifDiv.css("background-image", "url('" + picture.images.original_still.url + "')")
 				var bookmarkButton = $("<span class='btn btn-success bookmark'>");
 				bookmarkButton.html('<i class="fa fa-bookmark" aria-hidden="true"></i><span> Bookmark</span>');
 				bookmarkButton.attr("data-bookmark-url",picture.images.downsized.url);
@@ -93,6 +94,7 @@ var giphySearch = {
 		var state = $(event.currentTarget).attr("data-state");
 		var animate = $(event.currentTarget).attr("data-animate-url");
 		var stop = $(event.currentTarget).attr("data-still-url");
+
 		// this resets the previously active element back to a still image and catches error if there was no previous image
 		if (giphySearch.temp != "" && giphySearch.temp != stop ){
 			$(".gif-container[data-still-url='" + giphySearch.temp + "']").css("background-image", "url('" + giphySearch.temp + "')");
@@ -107,12 +109,12 @@ var giphySearch = {
 		if (state === "still"){		
 			giphySearch.temp = stop;
 			$(event.currentTarget).parent().removeClass("col-sm-4").addClass("col-sm-8");
-			$(event.currentTarget).css("max-width","500px")
+			$(event.currentTarget).css("max-width","480px")
 			$(event.currentTarget).css("background-image", "url('" + animate + "')");
 			$(event.currentTarget).attr("data-state","animated" );
 			$(event.currentTarget).animate({
-				height: '390px',
-				width: '430px'
+				height: '320px',
+				width: '480px'
 			});
 		}
 		else{		
@@ -186,9 +188,15 @@ $(document).on("click","#nextbutton",function(e){
 });
 
 $(document).on("click","#bookmarktrash",function(){
-	$("#saved").empty();
-	giphySearch.ignore = false;
-	$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>")
+	$("#bookmarktrash").addClass("animated bounce").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+		$("#bookmarktrash").removeClass("animated bounce");
+	});
+	$("#saved").addClass("animated fadeOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+		$("#saved").removeClass("animated fadeOut");
+		$("#saved").empty();
+		giphySearch.ignore = false;
+		$("#saved").append("<span style='color:white'>Bookmark Gif's to store them here and view later.</span>")
+	});	
 });
 
 
