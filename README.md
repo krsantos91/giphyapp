@@ -6,10 +6,10 @@ A custom web application to search and bookmark GIFs by implementing the giphy A
 
 
 <h3>Technologies Leveraged:</h3>
--Bootstrap
--JQuery.js
--API's
--AJAX
+-Bootstrap</br>
+-JQuery.js</br>
+-API's</br>
+-AJAX</br>
 
 <h3>Description</h3>
 The web app allows users to search for multiple GIF's by title using the giphy API. searches are saved throughout the browser session for the user to come back to. GIFs are stopped/animated by clicking on the images. Additionally, when a GIF is animated, the user is given the options to share the URL or bookmark the GIF for later use. 
