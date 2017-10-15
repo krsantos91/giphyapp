@@ -1,4 +1,5 @@
 # giphyapp
+<b>Link:</b> ![https://krsantos91.github.io/giphyapp/](https://krsantos91.github.io/giphyapp/)
 
 A custom web application to search and bookmark GIFs by implementing the giphy API
 
